@@ -1,0 +1,79 @@
+//Objetivo: Obtener algunos parámetros de un mov. Parabólico
+//Datos de entrada: Velocidad, tiempo y ángulo
+//Restricciones: Permite solo velocidad y tiempo positivos, ángulo desde 0° a 90°, además, el
+//tiempo ingresado no debe ser mayor al tiempo de vuelo
+package lab01;
+/**
+ *
+ * @author JMJ-7
+ */
+
+import javax.swing.*;
+
+public class Lab01{
+
+    public static void main(String[] args) {
+       //Constantes
+       final Double g=9.81;
+       //Variables
+       String velocidad,tiempo,angulo;
+       Double v,t,alfa,x,y,alturaMaxima,tiempoMaximo,distanciaCaida,tiempoCaida,b,alfa1;
+       //Título
+        JOptionPane.showMessageDialog(null, "\t Programa que calcula algunos parámetros  " + 
+                                            "\n de un Movimiento Parabólico");
+       //Velocidad
+       velocidad=JOptionPane.showInputDialog("Ingrese una velocidad en m/s");
+       v=Double.parseDouble(velocidad);
+        if(v>0){
+          //Tiempo
+          tiempo=JOptionPane.showInputDialog("Ingrese el tiempo en sengundos ");
+          t=Double.parseDouble(tiempo);
+            if(t>=0){
+                //Ángulo
+                angulo=JOptionPane.showInputDialog("Ingrese un ángulo en sexagesimal");
+                alfa1=Double.parseDouble(angulo);
+                if (alfa1>0 && alfa1<90){
+                    //pasando alfa1 a radianes 
+                    alfa=Math.toRadians(alfa1); 
+                    //Validando el tiempo ingresado
+                    tiempoMaximo=v*Math.sin(alfa)/g;//Ts=v*sin(alfa)/g
+                    tiempoCaida=2*tiempoMaximo;//Tvuelo=2*v*sin(alfa)/g=2*Ts
+                        if(t<=tiempoCaida ) {
+                           //Fórmulas
+                           x=v*Math.cos(alfa)*t;
+                           y=v*Math.sin(alfa)*t-g*Math.pow(t,2)/2;
+                           /*Las siguientes ecuaciones y las ecuaciones de las líneas 44 y 45 
+                            *se encuentran en el libro "FÍSICA I-Teoría y Problemas", 4ta Edición
+                            * del autor Régulo Sabrera Alvarado; páginas 304 y 305
+                           */
+                           b=Math.sin(alfa);
+                           alturaMaxima=Math.pow(v,2)*Math.pow(b,2)/(2*g);//H=v^2*sin^2(alfa)/(2*g), Altura Máxima
+                           distanciaCaida=Math.pow(v,2)*Math.sin(2*alfa)/g;//R=v^2*sin(2*alfa)/g, Alcance Horizontal
+                           JOptionPane.showMessageDialog(null,"RESULTADOS:" + "\n" + 
+                             "\t La distancia horizontal recorrida en el tiempo ' t ' es:  \t " + String.format("%.4f", x) + "\t metros" +
+                             "\n La distancia vertical recorrida en el tiempo ' t ' es:   \t " + String.format("%.4f", y) + "\t metros" + 
+                             "\n La máxima altura que alcanza el objeto es:  \t " + String.format("%.4f", alturaMaxima) + "\t metros" + 
+                             "\n El tiempo para alcanzar la altura máxima es:  \t " + String.format("%.4f", tiempoMaximo) + "\t segundos" +
+                             "\n El alcance horizontal que logra el objeto es:  \t " + String.format("%.4f", distanciaCaida) + "\t metros" +
+                             "\n El tiempo que tarda el objeto en caer es:  \t " + String.format("%.4f", tiempoCaida) + "\t segundos");
+                        }
+                        else {
+                            JOptionPane.showMessageDialog(null,"¡ERROR!" +"\n Debe ingresar un tiempo menor o igual " + 
+                                                          "\n  al tiempo de vuelo; Tv = " + String.format("%.4f", tiempoCaida)+"\t segundos");
+                        }
+                }
+              
+                else {
+                    JOptionPane.showMessageDialog(null, "¡ERROR:Ingrese solo ángulos " + "\n entre 0° y 90°!");
+                }
+           } 
+            else{
+               JOptionPane.showMessageDialog(null,"¡ERROR: El tiempo ingresado es incorrecto!");
+           }
+        } 
+        else{
+            JOptionPane.showMessageDialog(null,"¡ERROR: La velocidad ingresada es incorrecta!");
+        }
+        
+    }
+}
